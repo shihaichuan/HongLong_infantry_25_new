@@ -1,0 +1,135 @@
+/armor_detector:
+  ros__parameters:
+    debug: true
+    target_frame: base_link
+
+    detect_color: 1 # 1: red, 0: blue
+    binary_thres: 90
+
+    use_pca: false # 使用PCA算法矫正灯条的角点
+    use_ba: true # 使用BA优化算法求解装甲板的Yaw角 
+
+    light.min_ratio: 0.0001
+    light.max_ratio: 1.0
+    light.max_angle: 40.0
+    light.color_diff_thresh: 20
+    armor.min_light_ratio: 0.8
+    armor.min_small_center_distance: 0.8
+    armor.max_small_center_distance: 3.5
+    armor.min_large_center_distance: 3.5
+    armor.max_large_center_distance: 8.0
+    armor.max_angle: 35.0
+    
+
+    classifier_threshold: 0.8
+    ignore_classes: ["negative"]
+
+/rm_aimer:
+  ros__parameters:
+    debug: true
+    ekf_on: true    
+    predict_on: true    # 是否使用预测
+    track_center: true     # 是否跟随装甲板中
+    time_off: 0.1    # 预测时间
+    switch_threshold: 15.0    # 更新装甲板切换的角度阈值，角度制
+    init_pose_tolerance: 15.0    # 初始化位姿变化最大值，角度制
+    rubbish_data_tolerance: 50.0    # 可接受作为输入数据的装甲板在相机系的最大角度，角度制
+    force_aim_palstance_threshold: 0.8    # 强制允许发射的目标旋转速度最大值，弧度制
+    aim_angle_tolerance: 40.0    # 自动击发时目标装甲板绝对偏角最大值，角度制
+    aim_pose_tolerance: 0.05    # 自动击发位姿偏差最大值，弧度制
+    score_tolerance: 1.7  # 装甲板匹配得分最大值
+    all_white_tolerance_stop_shoot: 10    # 连续识别到全部为白色装甲板的次数容忍度，将会停止发射
+    all_white_tolerance_reset: 100    # 连续识别到全部为白色装甲板的次数容忍度，将会重置
+    shoot_interval: 0.02    # 发射间隔，单位：秒
+    Gimbal.pitch_off: 0.012
+    Gimbal.yaw_off: 0.02
+
+    CenterTrack.aim_center_palstance_threshold: 6.5    # 跟随圆心转跟随装甲板的目标旋转速度最大值，弧度制
+    # 更换锁中心模式角速度阈值，弧度制
+    CenterTrack.switch_trackmode_threshold: 1.2
+    # 跟随圆心自动击发目标偏角判断，角度制
+    CenterTrack.aim_center_angle_tolerance: 1.0
+
+
+
+    ModelObserver:
+      debug: true
+      dt: 0.01
+      Standard:
+        init_radius: 0.55
+        gain: 5.0   #噪声的放大倍数
+        process_noise:
+          displace_high_diff: 15.0 #值越大表示系统模型的不确定性越高#过大可能导致滤波器过于敏感，容易振荡
+          anglar_hig_diff: 10.0 #
+          height: 0.5
+          radius: 0.0
+        measure_noise:
+          pose: 15.0
+          distance: 10.0
+          angle: 0.7
+      Balance:
+        init_radius: 0.25
+        gain: 15.0
+        process_noise:
+          displace_high_diff: 10.0   # 注意：此处应与代码中的默认值一致
+          anglar_high_diff: 10.0
+          height: 0.0
+          radius: 0.5
+        measure_noise:
+          pose: 10.0
+          distance: 10.0
+          angle: 10.0
+
+
+/pose_solver:
+  ros__parameters:
+    debug: true
+
+    Gimbal:
+      shooter_link: shooter_link     # 电机系
+      gimbal_link: gimbal_link # 云台系
+      base_link : base_link
+
+      fix_on: true                        # 补偿
+      track_center: false                 # 锁中心
+      pitch_off: 0.0285
+      yaw_off: 0.0025
+    timeout: 0.2
+    Aimer:
+      switch_threshold: 20.0              # 装甲板切换的角度差，角度制
+      force_aim_palstance_threshold: 0.8  # 强制允许发射的目标旋转速度最大值，弧度制
+      aim_angle_tolerance: 35.0           # 自动击发时目标装甲板绝对偏角最大值，角度制
+      aim_pose_tolerance: 0.09            # 发射角度容忍度，弧度制
+      all_white_tolerance_stop_shoot: 15  # 连续识别到全部为白色装甲板的次数容忍度，将会停止发射
+      
+
+      CenterTrack:
+        aim_center_palstance_threshold: 10.0 # 锁中心的最低角速度阈值，角速度小于这个值不锁中心，弧度制
+        switch_trackmode_threshold: 1.2     # 更换锁中心模式角速度阈值，弧度制
+        aim_center_angle_tolerance: 5.0     # 跟随圆心自动击发目标偏角判断，角度制
+
+    shoot_interval: 0.0
+
+
+
+/camera_node:
+  ros__parameters:
+    camera_info_url: package://rm_vision_bringup/config/camera_info.yaml
+    exposure_time:  900
+    analog_gain: 64 #最小64
+    resolution_width: 1280
+    resolution_height: 1024
+    offsetX: 0
+    offsetY: 0
+    camera_name: "narrow_stereo"    
+
+/serial_driver:
+  ros__parameters:
+    timestamp_offset: 0.006
+    device_name: /dev/ttyACM0
+    baud_rate: 961200
+    flow_control: false
+    parity: none
+    stop_bits: "1"
+
+

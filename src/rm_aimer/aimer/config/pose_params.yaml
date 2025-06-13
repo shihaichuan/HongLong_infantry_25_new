@@ -1,0 +1,54 @@
+/pose_solver:
+  ros__parameters:
+    debug: true
+    ekf_on: true    # 是否使用EKF
+    predict_on: true    # 是否使用预测
+    track_center: true     # 是否跟随装甲板中
+    time_off: 0.1    # 预测时间
+    switch_threshold: 15.0    # 更新装甲板切换的角度阈值，角度制
+    init_pose_tolerance: 15.0    # 初始化位姿变化最大值，角度制
+    rubbish_data_tolerance: 50.0    # 可接受作为输入数据的装甲板在相机系的最大角度，角度制
+    force_aim_palstance_threshold: 0.8    # 强制允许发射的目标旋转速度最大值，弧度制
+    aim_angle_tolerance: 40.0    # 自动击发时目标装甲板绝对偏角最大值，角度制
+    aim_pose_tolerance: 0.05    # 自动击发位姿偏差最大值，弧度制
+    score_tolerance: 1.0    # 装甲板匹配得分最大值
+    all_white_tolerance_stop_shoot: 10    # 连续识别到全部为白色装甲板的次数容忍度，将会停止发射
+    all_white_tolerance_reset: 100    # 连续识别到全部为白色装甲板的次数容忍度，将会重置
+    shoot_interval: 0.02    # 发射间隔，单位：秒
+    Gimbal.pitch_off: 0.012
+    Gimbal.yaw_off: 0.02
+
+    CenterTrack.aim_center_palstance_threshold: 6.5    # 跟随圆心转跟随装甲板的目标旋转速度最大值，弧度制
+    # 更换锁中心模式角速度阈值，弧度制
+    CenterTrack.switch_trackmode_threshold: 1.2
+    # 跟随圆心自动击发目标偏角判断，角度制
+    CenterTrack.aim_center_angle_tolerance: 1.0
+
+    ModelObserver.debug: true
+    ModelObserver.dt: 0.01
+
+    ModelObserver.Standard.init_radius: 0.25    # 初始半径
+    ModelObserver.Standard.gain: 15.0    # 测距噪声关于角度的增益倍数
+
+    ModelObserver.Standard.process_noise.displace_high_diff: 3    # 状态转移噪声系数
+    ModelObserver.Standard.process_noise.anglar_high_diff: 15
+    ModelObserver.Standard.process_noise.height: 0.0001
+    ModelObserver.Standard.process_noise.radius: 0.000005
+
+    ModelObserver.Standard.measure_noise.pose: 0.002    # 观测噪声系数
+    ModelObserver.Standard.measure_noise.distance: 0.1
+    ModelObserver.Standard.measure_noise.angle: 0.5
+
+    ModelObserver.Balance.init_radius: 0.2    # 初始半径
+    ModelObserver.Balance.gain: 30.0    # 测距噪声关于角度的增益倍数
+
+    # 状态转移噪声系数
+    ModelObserver.Balance.process_noise.displace_high_diff: 0.2
+    ModelObserver.Balance.process_noise.anglar_high_diff: 10
+    ModelObserver.Balance.process_noise.height: 0.0001
+    ModelObserver.Balance.process_noise.radius: 0.00001
+
+    # 观测噪声系数
+    ModelObserver.Balance.measure_noise.pose: 0.002
+    ModelObserver.Balance.measure_noise.distance: 0.01
+    ModelObserver.Balance.measure_noise.angle: 0.5

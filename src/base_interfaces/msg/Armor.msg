@@ -1,0 +1,11 @@
+std_msgs/Header header
+string number
+string type
+float32 distance_to_image_center
+geometry_msgs/Pose pose
+float64 yaw_angle
+int32 m_armor_type
+int32 m_color
+uint8 ARMOR_UNKNOWN=0
+uint8 ARMOR_SMALL=1
+uint8 ARMOR_LARGE=2

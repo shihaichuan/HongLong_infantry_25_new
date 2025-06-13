@@ -1,0 +1,11 @@
+camera: hik
+
+base_link2camera:
+  xyz: "\"0.202 0.00  0.0885\""
+
+  rpy: "\"0.0  0.033  0.015\""
+
+detector_log_level: INFO
+tracker_log_level: INFO
+serial_log_level: INFO
+

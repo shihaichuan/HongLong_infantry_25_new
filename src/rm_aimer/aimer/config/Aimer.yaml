@@ -1,0 +1,43 @@
+ModelObserver:
+  debug: true
+    # 单位时间
+  dt: 0.01
+
+  Standard:
+    # 初始半径
+    init_radius: 0.25
+    # 测距噪声关于角度的增益倍数
+    gain: 15.0
+
+    # 状态转移噪声系数
+    process_noise:
+      displace_high_diff: 3.0
+      anglar_high_diff: 15.0
+      height: 0.0001
+      radius: 0.000005
+
+    # 观测噪声系数
+    measure_noise:
+      pose: 0.002
+      distance: 0.1
+      angle: 0.5
+
+  Balance:
+        # 初始半径
+    init_radius: 0.2
+        # 测距噪声关于角度的增益倍数
+    gain: 30.0
+
+        # 状态转移噪声系数
+    process_noise:
+      displace_high_diff: 0.2
+      anglar_high_diff: 10.0
+      height: 0.0001
+      radius: 0.00001
+
+        # 观测噪声系数
+    measure_noise:
+      pose: 0.002
+      distance: 0.01
+      angle: 0.5
+      

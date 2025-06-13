@@ -1,0 +1,33 @@
+/**:
+  ros__parameters:
+    timeout: 0.2
+    Aimer:
+      switch_threshold: 20.0              # 装甲板切换的角度差，角度制
+      force_aim_palstance_threshold: 0.8  # 强制允许发射的目标旋转速度最大值，弧度制
+      aim_angle_tolerance: 35.0           # 自动击发时目标装甲板绝对偏角最大值，角度制
+      aim_pose_tolerance: 0.03            # 发射角度容忍度，弧度制
+      all_white_tolerance_stop_shoot: 15  # 连续识别到全部为白色装甲板的次数容忍度，将会停止发射
+
+      CenterTrack:
+        aim_center_palstance_threshold: 7.0 # 锁中心的最低角速度阈值，角速度小于这个值不锁中心，弧度制
+        switch_trackmode_threshold: 1.2     # 更换锁中心模式角速度阈值，弧度制
+        aim_center_angle_tolerance: 5.0     # 跟随圆心自动击发目标偏角判断，角度制
+    shoot_interval: 0.0
+
+pose_solver:
+  ros__parameters:
+    debug: true
+
+    Gimbal:
+      shooter_link: shooter_link     # 电机系
+      gimbal_link: gimbal_link # 云台系
+
+      fix_on: true                        # 补偿
+      track_center: false                 # 锁中心
+      pitch_off: -0.0185
+      yaw_off: 0.0025
+
+    Aimer:
+      time_off: 0.012                    # 预测位姿补偿
+
+
